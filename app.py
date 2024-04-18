@@ -21,11 +21,38 @@ def get_products_from_db():
     conn = sqlite3.connect('cafe_management.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT ProductName, Category, Price, StockQuantity FROM Products")
+    cursor.execute("SELECT ProductID, ProductName, Category, Price, StockQuantity FROM Products")
     products = cursor.fetchall()
 
     conn.close()
     return products
+
+# 在庫の数量を更新する関数
+def update_stock_quantity(product_id, quantity):
+    conn = sqlite3.connect('cafe_management.db')
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    UPDATE Products
+    SET StockQuantity = StockQuantity + ?
+    WHERE ProductID = ?
+    """, (quantity, product_id))
+
+    conn.commit()
+    conn.close()
+
+# 在庫履歴をデータベースに保存する関数
+def add_stock_history_to_db(product_id, user_id, quantity, note):
+    conn = sqlite3.connect('cafe_management.db')
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO StockHistory (ProductID, UserID, Quantity, StockDate, Note)
+    VALUES (?, ?, ?, datetime('now', 'localtime'), ?)
+    """, (product_id, user_id, quantity, note))
+
+    conn.commit()
+    conn.close()
 
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -45,6 +72,25 @@ def add_product():
 def products():
     products = get_products_from_db()
     return render_template('products.html', products=products)
+
+@app.route('/stock_history', methods=['GET', 'POST'])
+def stock_history():
+    if request.method == 'POST':
+        product_id = request.form.get('product_id')
+        user_id = request.form.get('user_id')  # 今回はユーザーIDは固定で1とします
+        quantity = request.form.get('quantity')
+        note = request.form.get('note')
+
+        # 在庫の更新
+        update_stock_quantity(product_id, quantity)
+
+        # 在庫履歴の追加
+        add_stock_history_to_db(product_id, user_id, quantity, note)
+
+        return "在庫履歴を更新しました！"
+
+    products = get_products_from_db()
+    return render_template('stock_history.html', products=products)
 
 if __name__ == '__main__':
     app.run(debug=True)
