@@ -9,8 +9,14 @@
         <label for="product_name">商品名:</label>
         <input type="text" id="product_name" name="product_name" required><br><br>
 
-        <label for="quantity">数量:</label>
-        <input type="number" id="quantity" name="quantity" required><br><br>
+        <label for="category">カテゴリ:</label>
+        <input type="text" id="category" name="category" required><br><br>
+
+        <label for="price">価格:</label>
+        <input type="number" id="price" name="price" step="0.01" min="0" required><br><br>
+
+        <label for="stock_quantity">在庫数量:</label>
+        <input type="number" id="stock_quantity" name="stock_quantity" min="0" required><br><br>
 
         <input type="submit" value="追加">
     </form>
