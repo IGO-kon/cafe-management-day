@@ -8,6 +8,11 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">商品一覧</h1>
+        <!-- 商品追加と在庫履歴へのボタン -->
+        <div class="mb-3">
+            <a href="{{ url_for('add_product') }}" class="btn btn-primary">商品追加</a>
+            <a href="{{ url_for('stock_history_list') }}" class="btn btn-secondary">在庫履歴</a>
+        </div>
         <table class="table mt-4">
             <thead>
                 <tr>
@@ -15,15 +20,24 @@
                     <th>カテゴリ</th>
                     <th>価格</th>
                     <th>在庫数量</th>
+                    <th>アクション</th>
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
                 <tr>
-                    <td>{{ product[0] }}</td>
                     <td>{{ product[1] }}</td>
                     <td>{{ product[2] }}</td>
                     <td>{{ product[3] }}</td>
+                    <td>{{ product[4] }}</td>
+                    <!-- 商品編集ボタン -->
+                    <td>
+                        <a href="{{ url_for('edit_product', product_id=product[0]) }}" class="btn btn-sm btn-warning">編集</a>
+                        <!-- 商品削除ボタン -->
+                        <form action="{{ url_for('delete_product', product_id=product[0]) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('本当にこの商品を削除してもよろしいですか？')">削除</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

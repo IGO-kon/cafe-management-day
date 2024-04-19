@@ -8,6 +8,10 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">在庫履歴</h1>
+        <!-- 在庫履歴一覧ページへのボタン -->
+        <a href="{{ url_for('products') }}" class="btn btn-secondary">商品一覧</a>
+        <a href="{{ url_for('stock_history_list') }}" class="btn btn-secondary">在庫履歴</a>
+
         <form action="/stock_history" method="post" class="mt-4">
             <div class="form-group">
                 <label for="product_id">商品名:</label>

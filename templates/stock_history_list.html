@@ -8,6 +8,10 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">入出庫履歴一覧</h1>
+        <!-- 在庫履歴ページへのボタン -->
+        <a href="{{ url_for('add_product') }}" class="btn btn-primary">商品追加</a>
+        <a href="{{ url_for('products') }}" class="btn btn-secondary">商品一覧</a>
+
         <table class="table mt-4">
             <thead>
                 <tr>
