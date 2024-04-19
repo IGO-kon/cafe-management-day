@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>入出庫履歴一覧</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">入出庫履歴一覧</h1>
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>履歴ID</th>
+                    <th>商品名</th>
+                    <th>操作ユーザー</th>
+                    <th>数量</th>
+                    <th>日時</th>
+                    <th>備考</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in stock_history %}
+                <tr>
+                    <td>{{ history[0] }}</td>
+                    <td>{{ history[1] }}</td>
+                    <td>{{ history[2] }}</td>
+                    <td>{{ history[3] }}</td>
+                    <td>{{ history[4] }}</td>
+                    <td>{{ history[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

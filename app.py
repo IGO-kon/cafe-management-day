@@ -1,5 +1,6 @@
 import sqlite3
 from flask import Flask, render_template, request
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -54,6 +55,23 @@ def add_stock_history_to_db(product_id, user_id, quantity, note):
     conn.commit()
     conn.close()
 
+# 在庫履歴をデータベースから取得する関数
+def get_stock_history_from_db():
+    conn = sqlite3.connect('cafe_management.db')
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT sh.HistoryID, p.ProductName, u.DisplayName, sh.Quantity, sh.StockDate, sh.Note
+    FROM StockHistory sh
+    JOIN Products p ON sh.ProductID = p.ProductID
+    JOIN Users u ON sh.UserID = u.UserID
+    ORDER BY sh.StockDate DESC
+    """)
+    stock_history = cursor.fetchall()
+
+    conn.close()
+    return stock_history
+
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
     if request.method == 'POST':
@@ -91,6 +109,11 @@ def stock_history():
 
     products = get_products_from_db()
     return render_template('stock_history.html', products=products)
+
+@app.route('/stock_history_list')
+def stock_history_list():
+    stock_history = get_stock_history_from_db()
+    return render_template('stock_history_list.html', stock_history=stock_history)
 
 if __name__ == '__main__':
     app.run(debug=True)
