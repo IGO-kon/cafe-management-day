@@ -32,8 +32,8 @@
                     <td>
                         <!-- 編集ボタンを追加 -->
                         <a href="{{ url_for('edit_stock_history', history_id=entry[0]) }}" class="btn btn-primary btn-sm">編集</a>
-                        <!-- 削除ボタン -->
-                        <form method="post" style="display: inline;">
+                        <!-- 削除フォームを追加 -->
+                        <form action="{{ url_for('delete_stock_history', history_id=entry[0]) }}" method="post" style="display: inline;">
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn btn-danger btn-sm">削除</button>
                         </form>
