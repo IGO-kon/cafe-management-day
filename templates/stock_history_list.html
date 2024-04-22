@@ -8,30 +8,36 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">入出庫履歴一覧</h1>
-        <!-- 在庫履歴ページへのボタン -->
-        <a href="{{ url_for('add_product') }}" class="btn btn-primary">商品追加</a>
-        <a href="{{ url_for('products') }}" class="btn btn-secondary">商品一覧</a>
-
         <table class="table mt-4">
             <thead>
                 <tr>
                     <th>履歴ID</th>
                     <th>商品名</th>
-                    <th>操作ユーザー</th>
+                    <th>ユーザー名</th>
                     <th>数量</th>
                     <th>日時</th>
                     <th>備考</th>
+                    <th>操作</th> <!-- 新しい列を追加 -->
                 </tr>
             </thead>
             <tbody>
-                {% for history in stock_history %}
+                {% for entry in stock_history %}
                 <tr>
-                    <td>{{ history[0] }}</td>
-                    <td>{{ history[1] }}</td>
-                    <td>{{ history[2] }}</td>
-                    <td>{{ history[3] }}</td>
-                    <td>{{ history[4] }}</td>
-                    <td>{{ history[5] }}</td>
+                    <td>{{ entry[0] }}</td>
+                    <td>{{ entry[1] }}</td>
+                    <td>{{ entry[2] }}</td>
+                    <td>{{ entry[3] }}</td>
+                    <td>{{ entry[4] }}</td>
+                    <td>{{ entry[5] }}</td>
+                    <td>
+                        <!-- 編集ボタンを追加 -->
+                        <a href="{{ url_for('edit_stock_history', history_id=entry[0]) }}" class="btn btn-primary btn-sm">編集</a>
+                        <!-- 削除フォームを追加 -->
+                        <form action="{{ url_for('delete_stock_history', history_id=entry[0]) }}" method="post" style="display: inline;">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
